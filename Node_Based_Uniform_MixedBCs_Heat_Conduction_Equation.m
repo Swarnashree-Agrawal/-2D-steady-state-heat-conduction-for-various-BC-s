@@ -2,9 +2,9 @@
 % Neumann and Dirichlet Boundary Conditions using Node based approach
 % UNIFORM GRID & NODE BASED APPROACH %
 
-clc
-clear
-close all
+clc;
+clear;
+close all;
 
 % Input Parameters
 Nx = 81;         % Grid Points in X direction 
