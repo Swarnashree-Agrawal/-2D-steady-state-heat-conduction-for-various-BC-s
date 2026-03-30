@@ -1,0 +1,150 @@
+% This MATLAB code is for 2D Steady State Heat Conduction equation when we have 
+% Neumann and Dirichlet Boundary Conditions using Node based approach
+% NON UNIFORM GRID & NODE BASED APPROACH %
+
+clc
+clear
+close all
+
+% Input Parameters
+Nx = 81;         % Grid Points in X direction 
+Ny = 81;         % Grid Points in Y direction
+Lx = 1;         % Length in x
+Ly = 1;         % Length in y
+
+tic
+% Grid points calculations in x and y directions
+n=0.75;
+for i =1:Nx
+    s=(i-1)/(Nx-1);
+    x(i) = Lx/2 * (1+sign(s-0.5)*(abs(2*s-1))^n);
+end
+
+for i =1:Ny
+    s=(i-1)/(Ny-1);
+    y(i) = Ly/2 * (1+sign(s-0.5)*(abs(2*s-1))^n);
+end 
+
+
+%Boundary conditions
+T_Top   = 100;    % Top boundary in deg 
+T_Right = 50;    % Right boundary in deg
+
+Ti = (T_Right+T_Top)/2; %Initial Temp
+T = Ti*ones(Nx,Ny); %Initialising grid points
+
+% Other grid points BCs
+T(1, :) = T_Top;      % Right boundary
+T(:, Nx) = T_Right;       % Top boundary
+
+% Corner points BCs
+T(1,1) = T_Top;
+% T(Nx,1) = ;
+T(1, Nx) = (T_Right+T_Top)/2;
+T(Ny,Nx) = T_Right;
+
+T(:,end) = T_Right;       % right boundary (Dirichlet)
+T(end,:) = T_Top;         % top boundary (Dirichlet)
+T(:,1) = T(:,2);          % left insulated: mirror column 2 into column 1
+T(1,:) = T(2,:);          % bottom insulated: mirror row 2 into row 1
+
+tol=1e-6;
+error=1;
+iter=0;
+max_iter=100000;
+while (error > tol && iter<=max_iter)
+    iter=iter+1;
+    T_old = T;   %storing old value
+    errormax = 0;
+    errorcomp = 0;
+
+
+    for j = 2:Ny-1
+        for i = 2:Nx-1
+            % grid spacing in x around point (i)
+            dx_w = x(i) - x(i-1);     % distance to west 
+            dx_e = x(i+1) - x(i);     % distance to east 
+            % aE acts on T(i+1), aW acts on T(i-1)
+            aE = 2 / ( dx_e * (dx_w + dx_e) );
+            aW = 2 / ( dx_w * (dx_w + dx_e) );
+            
+            % grid spacing in y around point (j)
+            dy_s = y(j) - y(j-1);    % distance to south
+            dy_n = y(j+1) - y(j);    % distance to north
+            % aN acts on T(j+1), aS acts on T(j-1)
+            aN = 2 / ( dy_n * (dy_s + dy_n) );
+            aS = 2 / ( dy_s * (dy_s + dy_n) );
+            
+            % center coefficient (sum of neighbors)
+            aP = aE + aW + aN + aS;
+            
+            T(j,i) = ( aE * T(j, i+1) + aW * T(j, i-1) + aN * T(j+1, i) + aS * T(j-1, i) ) / aP;
+            diff=abs(T(i, j) - T_old(i,j));
+            if diff>errorcomp
+                errormax=diff;
+            end
+             errorcomp = max(errorcomp, errormax); % Updating maximum error
+        end
+    end
+    
+    % Forcing BCs - Setting ghost cells for consistent BCs
+    T(:,1)   = T(:,2);   % approximation dT/dx = 0    
+    T(1,:)   = T(2,:);   % approximation dT/dy = 0
+    T(:,end) = T_Right;  
+    T(end,:) = T_Top;
+    T(Ny,Nx) = 0.5*(T_Right+T_Top);
+
+ error = errormax;
+    if error < tol
+        fprintf("Tolerance met at %d iterations\n", iter);
+        break
+    end
+end
+
+
+%Centreline Temperatures 
+mid_x = round(Nx/2);   % Rounding to get an integer when Nx is odd
+mid_y = round(Ny/2);   % Rounding to get an integer when Ny is odd
+
+T_x = T(mid_x, :); 
+T_y = T(:, mid_y);  
+T_mid = T(mid_x, mid_y)
+% T(1, Nx) = (T_Right+T_Top)/2;
+toc
+
+figure;
+plot(y, T_x, 'r-', 'LineWidth', 2); hold on;
+plot(x, T_y, 'b-', 'LineWidth', 2);
+xlabel('Position');
+ylabel('Temperature (°C)');
+axis equal       
+axis square 
+title('Numerical Centreline Temperatures - Node Based Non Uniform');
+legend('Along x (y = Ly/2)','Along y (x = Lx/2)','Location','north');
+grid on;
+
+figure;
+levels = linspace(min(T(:)),max(T(:)),30);
+contourf(x,y,T,levels);
+colormap(jet(length(levels)-1));
+colorbar;
+axis equal       
+axis square 
+xlabel('x', 'FontSize', 14);
+ylabel('y', 'FontSize', 14);
+title('2d Steady-State Heat Conduction - Node Based Non Uniform')
+set(gca, 'FontSize', 16);  
+
+
+[X, Y] = meshgrid(x,y);
+
+figure;
+axis equal       
+axis square       
+plot(X(:), Y(:), 'ko','MarkerSize',3)
+xlabel('Position');
+ylabel('Spacing');
+axis equal       
+axis square  
+title('Distribution');
+grid on;
