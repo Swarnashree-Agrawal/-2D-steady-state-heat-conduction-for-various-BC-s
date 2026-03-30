@@ -2,9 +2,9 @@
 % Neumann and Dirichlet Boundary Conditions using Cell Centred Approach
 % UNIFORM GRID & CELL CENTRED APPROACH %
 
-clc
-clear
-close all
+clc;
+clear;
+close all;
 
 % Input Parameters
 Nx = 81;    % Number of cells in X direction
