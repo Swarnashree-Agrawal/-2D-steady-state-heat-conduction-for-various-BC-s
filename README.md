@@ -1,4 +1,4 @@
-Problem Statement
+# Problem Statement
 The objective is to solve the two-dimensional steady-state heat conduction equation for a rectangular plate with no internal heat generation.
 The plate is discretized using a Uniform Grid and Non Uniform Grid, and appropriate boundary conditions are applied. 
 The left and bottom sides of the plate are subjected to Neumann boundary conditions (specified heat flux), while the remaining boundaries are treated with Dirichlet boundary conditions.
