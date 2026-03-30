@@ -10,3 +10,8 @@ In short the problem must be solved for the following four combinations:
 2. Node-based formulation with a non-uniform grid
 3. Cell-centered formulation with a uniform grid
 4. Cell-centered formulation with a non-uniform grid
+
+
+# Governing Equation
+The 2D steady-state heat conduction equation without heat generation is as follows:
+$$ \frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2} = 0 $$
