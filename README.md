@@ -13,5 +13,5 @@ In short the problem must be solved for the following four combinations:
 
 
 # Governing Equation
-The 2D steady-state heat conduction equation without heat generation is as follows:
-$$ \frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2} = 0 $$
+The steady-state heat equation is defined as $\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2} = 0$.
+
