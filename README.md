@@ -18,12 +18,21 @@ The steady-state heat equation is defined as $\frac{\partial^2 T}{\partial x^2} 
 ## Boundary Conditions
 
 ### Dirichlet (Fixed Temperature)
-Temperature is directly specified on boundaries (top and right):$T = T_{\text{specified}}$.
+Temperature is directly specified on boundaries (top and right):
+
+`T = T_specified`
 
 ### Neumann (Zero Heat Flux)
-Temperature gradient is specified (left and bottom):$\frac{\partial T}{\partial x} = 0$.
+Temperature gradient is specified (left and bottom):
 
-Finite difference form:$\frac{T_1 - T_0}{\Delta x} = 0 \;\Rightarrow\; T_0 = T_1$
+`∂T/∂x = 0`
+
+Finite difference form:
+
+`(T1 - T0) / Δx = 0  →  T0 = T1`
+
+> Boundary node temperature equals adjacent interior node.
+
 
 
 
