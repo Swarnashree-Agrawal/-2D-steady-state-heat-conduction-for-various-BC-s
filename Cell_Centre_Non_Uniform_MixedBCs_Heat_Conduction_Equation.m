@@ -1,10 +1,10 @@
 % This code is for 2D Steady State Heat Conduction equation when we have 
-% Neumann and Dirichlet Boundary Conditions using Node based approach
+% Neumann and Dirichlet Boundary Conditions using Cell Centred approach
 % NON UNIFORM GRID & CELL CENTRE BASED APPROACH %
 
-clc
-clear
-close all
+clc;
+clear; 
+close all;
 
 % Input Parameters
 Nx_nodes = 81;         % Grid Points in X direction 
