@@ -15,3 +15,16 @@ In short the problem must be solved for the following four combinations:
 # Governing Equation
 The steady-state heat equation is defined as $\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2} = 0$.
 
+## Boundary Conditions
+
+### Dirichlet (Fixed Temperature)
+Temperature is directly specified on boundaries (top and right):$T = T_{\text{specified}}$.
+
+### Neumann (Zero Heat Flux)
+Temperature gradient is specified (left and bottom):$\frac{\partial T}{\partial x} = 0$.
+
+Finite difference form:$\frac{T_1 - T_0}{\Delta x} = 0 \;\Rightarrow\; T_0 = T_1$
+
+
+
+
